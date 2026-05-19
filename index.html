@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>滴答清单 × OpenClaw 集成项目汇报</title>
+<title>滴答清单 × OpenClaw 集成汇报</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -44,132 +44,145 @@ body {
   border-bottom: 2px solid #f0f0f0;
 }
 
-/* Chat flow */
-.chat-flow {
-  padding-left: 20px;
-  border-left: 3px solid #e9ecef;
+/* Flow Steps - 真实流程 */
+.real-flow {
+  position: relative;
+  padding-left: 40px;
 }
-.chat-msg {
+.real-flow::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #00b894, #0984e3, #6c5ce7, #e17055, #fdcb6e);
+  border-radius: 2px;
+}
+.flow-item {
   position: relative;
   margin-bottom: 20px;
-  padding: 14px 18px;
+  padding: 16px 18px;
+  background: #fafbfc;
   border-radius: 12px;
+  border-left: 3px solid #00b894;
 }
-.chat-msg.ai {
-  background: #f0f7ff;
-  border-left: 4px solid #0984e3;
+.flow-item:last-child { margin-bottom: 0; }
+.flow-item::before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 20px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00b894;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #00b894;
 }
-.chat-msg.user {
-  background: #e8f8f5;
-  border-left: 4px solid #00b894;
-}
-.chat-msg .sender {
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-.chat-msg.ai .sender { color: #0984e3; }
-.chat-msg.user .sender { color: #00b894; }
-.chat-msg .text { font-size: 13px; color: #333; }
-.chat-msg .highlight {
-  background: #fff3cd;
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-top: 8px;
-  font-size: 13px;
-  border: 1px solid #ffeaa7;
-}
+.flow-item.step2::before { background: #0984e3; box-shadow: 0 0 0 2px #0984e3; }
+.flow-item.step3::before { background: #6c5ce7; box-shadow: 0 0 0 2px #6c5ce7; }
+.flow-item.step4::before { background: #e17055; box-shadow: 0 0 0 2px #e17055; }
+.flow-item.step5::before { background: #fdcb6e; box-shadow: 0 0 0 2px #fdcb6e; border-color: #fdcb6e; }
 
-/* Integration plan doc */
-.plan-doc {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border: 2px solid #6c5ce7;
-  border-radius: 16px;
-  padding: 24px;
-  margin: 20px 0;
-}
-.plan-doc .doc-title {
-  font-size: 20px;
-  font-weight: 800;
-  color: #6c5ce7;
-  text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #6c5ce7;
-}
-.plan-section {
-  margin-bottom: 16px;
-}
-.plan-section h3 {
-  font-size: 15px;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 8px;
-  padding: 6px 12px;
-  background: #6c5ce7;
-  color: white;
-  border-radius: 8px;
+.flow-item .step-tag {
   display: inline-block;
-}
-.plan-section .content {
-  font-size: 13px;
-  color: #555;
-  padding: 8px 12px;
-  background: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
   border-radius: 8px;
+  color: white;
+  margin-bottom: 8px;
 }
-.plan-section .content ul {
-  margin: 6px 0 0 16px;
-}
-.plan-section .content li {
-  margin-bottom: 4px;
-}
+.flow-item .step-tag.t1 { background: #00b894; }
+.flow-item .step-tag.t2 { background: #0984e3; }
+.flow-item .step-tag.t3 { background: #6c5ce7; }
+.flow-item .step-tag.t4 { background: #e17055; }
+.flow-item .step-tag.t5 { background: #fdcb6e; color: #333; }
 
-/* 3 approaches */
-.approach-cards {
+.flow-item .title { font-size: 15px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+.flow-item .desc { font-size: 13px; color: #666; }
+.flow-item .detail { font-size: 12px; color: #888; margin-top: 8px; padding: 8px 12px; background: #f0f7ff; border-radius: 8px; }
+
+/* 4 方案对比 */
+.approach-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin: 12px 0;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
 .approach-card {
-  background: white;
-  border: 2px solid #e9ecef;
+  background: #f8f9fa;
   border-radius: 12px;
-  padding: 14px;
-  text-align: center;
+  padding: 18px;
+  border: 2px solid #e9ecef;
+  position: relative;
 }
-.approach-card.recommended {
+.approach-card.chosen {
   border-color: #00b894;
-  background: #e8f8f5;
+  background: linear-gradient(135deg, #e8f8f5, #f0fff4);
+}
+.approach-card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 .approach-card .letter {
-  font-size: 24px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   font-weight: 800;
-  color: #6c5ce7;
+  color: white;
+  flex-shrink: 0;
 }
-.approach-card .name {
-  font-size: 13px;
-  font-weight: 700;
-  margin: 6px 0;
-  color: #333;
-}
-.approach-card .desc {
-  font-size: 11px;
-  color: #888;
-}
-.approach-card .tag {
-  display: inline-block;
+.approach-card .letter.a { background: #00b894; }
+.approach-card .letter.b { background: #0984e3; }
+.approach-card .letter.c { background: #6c5ce7; }
+.approach-card .letter.d { background: #e17055; }
+.approach-card .name { font-size: 14px; font-weight: 700; color: #333; }
+.approach-card .badge {
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 6px;
   color: white;
-  margin-top: 6px;
+  font-weight: 700;
 }
-.approach-card .tag.rec { background: #00b894; }
-.approach-card .tag.alt { background: #636e72; }
+.approach-card .badge.chosen { background: #00b894; }
+.approach-card .desc { font-size: 12px; color: #666; }
+.approach-card .pros {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #27ae60;
+}
+.approach-card .cons {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #e17055;
+}
 
-/* Comparison table */
+/* 功能映射 */
+.feature-mapping {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.feature-map-item {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  border: 2px solid #e9ecef;
+}
+.feature-map-item.active { border-color: #00b894; background: #e8f8f5; }
+.feature-map-item .icon { font-size: 28px; margin-bottom: 6px; }
+.feature-map-item .name { font-size: 12px; font-weight: 600; color: #333; }
+.feature-map-item .status { font-size: 11px; color: #27ae60; margin-top: 4px; }
+
+/* 对比表格 */
 table { width: 100%; border-collapse: collapse; }
 th {
   background: #f8f9fa;
@@ -188,108 +201,106 @@ td {
 td:not(:first-child) { text-align: center; }
 tr:hover { background: #fafafa; }
 
-/* Features grid */
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-.feature-item {
-  background: #f8f9fa;
-  border-radius: 10px;
-  padding: 12px;
-  text-align: center;
-}
-.feature-item .icon { font-size: 24px; }
-.feature-item .name { font-size: 12px; font-weight: 600; color: #333; margin-top: 4px; }
-
-/* Steps timeline */
-.steps-timeline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 20px 0;
-  position: relative;
-}
-.steps-timeline::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #00b894, #0984e3, #6c5ce7, #e17055);
-  border-radius: 2px;
-  transform: translateY(-50%);
-}
-.step-point {
-  position: relative;
-  text-align: center;
-  z-index: 1;
-}
-.step-point .dot {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #00b894;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  margin: 0 auto 6px;
-}
-.step-point .label { font-size: 11px; color: #666; white-space: nowrap; }
-
-/* Result summary */
-.result-box {
+/* 总结卡片 */
+.summary-box {
   background: linear-gradient(135deg, #e8f8f5, #d5f5e3);
   border: 2px solid #00b894;
   border-radius: 16px;
   padding: 24px;
   text-align: center;
 }
-.result-box h3 { font-size: 18px; color: #1b5e20; margin-bottom: 14px; }
-.result-grid {
+.summary-box h3 { font-size: 18px; color: #1b5e20; margin-bottom: 14px; }
+.summary-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
-.result-item {
+.summary-item {
   background: white;
   border-radius: 10px;
   padding: 14px;
 }
-.result-item .label { font-size: 12px; color: #888; }
-.result-item .value { font-size: 18px; font-weight: 800; color: #2e7d32; margin-top: 2px; }
+.summary-item .label { font-size: 12px; color: #888; }
+.summary-item .value { font-size: 18px; font-weight: 800; color: #2e7d32; margin-top: 2px; }
 
-/* Actual usage demo */
-.demo-box {
+/* 对话引用 */
+.quote-box {
   background: #f0f7ff;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 12px 0;
+  border-left: 4px solid #0984e3;
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin-bottom: 14px;
 }
-.demo-box .label {
+.quote-box .author { font-size: 12px; color: #0984e3; font-weight: 700; margin-bottom: 4px; }
+.quote-box .text { font-size: 13px; color: #333; font-style: italic; }
+
+/* Timeline */
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #00b894, #0984e3, #6c5ce7, #e17055, #fdcb6e);
+  border-radius: 2px;
+  transform: translateY(-50%);
+}
+.tl-point {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+.tl-point .dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #00b894;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 12px;
-  color: #0984e3;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin: 0 auto 6px;
 }
-.demo-box .content {
-  font-size: 13px;
-  color: #333;
+.tl-point .label { font-size: 10px; color: #666; white-space: nowrap; }
+
+/* 下一步 */
+.next-steps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
-.demo-box .result {
-  background: #e8f8f5;
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-top: 8px;
-  font-size: 13px;
-  color: #27ae60;
-  font-weight: 600;
+.next-step-item {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
 }
+.next-step-item .num {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #00b894;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.next-step-item .text { font-size: 13px; color: #333; }
 
 .footer {
   text-align: center;
@@ -299,9 +310,10 @@ tr:hover { background: #fafafa; }
 }
 
 @media (max-width: 768px) {
-  .approach-cards { grid-template-columns: 1fr; }
-  .feature-grid { grid-template-columns: repeat(2, 1fr); }
-  .result-grid { grid-template-columns: 1fr; }
+  .approach-grid { grid-template-columns: 1fr; }
+  .feature-mapping { grid-template-columns: repeat(2, 1fr); }
+  .summary-grid { grid-template-columns: 1fr; }
+  .next-steps { grid-template-columns: 1fr; }
   .header h1 { font-size: 20px; }
 }
 </style>
@@ -310,211 +322,178 @@ tr:hover { background: #fafafa; }
 <div class="container">
 
 <div class="header">
-  <h1>滴答清单 × OpenClaw 集成项目汇报</h1>
-  <p>从需求讨论到方案落地 — AI 任务管理自动化完整流程</p>
+  <h1>滴答清单 × OpenClaw 集成汇报</h1>
+  <p>AI 任务管理自动化 — 从需求分析到方案落地的完整流程</p>
   <div class="subtitle">千广传媒 · 2026年5月</div>
 </div>
 
-<!-- 1. 需求讨论 -->
+<!-- 1. 需求背景 -->
 <div class="section">
-  <h2>📌 第一步：需求讨论</h2>
-  <div class="chat-flow">
-    <div class="chat-msg ai">
-      <div class="sender">🤖 AI (卡卡)</div>
-      <div class="text">
-        滴答清单 (TickTick) 确实是个不错的任务管理工具，功能比 Apple Reminders 丰富很多。<br><br>
-        <strong>核心优势：</strong><br>
-        📅 日历视图 + 四象限 Eisenhower Matrix<br>
-        ⏰ 自然语言识别（输入"明天下午3点开会"自动解析时间）<br>
-        🔁 灵活的重复任务<br>
-        📊 习惯打卡 + 番茄钟<br>
-        🏷️ 标签 + 清单 + 优先级多层级<br>
-        🌐 全平台同步 (Web/iOS/Android/Mac/Win)
-      </div>
+  <h2> 第一步：需求确认</h2>
+  <div class="quote-box">
+    <div class="author">Teny</div>
+    <div class="text">「滴答清单功能比 Apple Reminders 丰富很多，想用 AI + 飞书把滴答清单搞起来」</div>
+  </div>
+  <div class="quote-box">
+    <div class="author">核心需求</div>
+    <div class="text">让团队通过自然语言对话就能管理滴答清单任务，提升效率</div>
+  </div>
+</div>
+
+<!-- 2. 功能分析 -->
+<div class="section">
+  <h2> 第二步：滴答清单核心功能分析</h2>
+  <div class="feature-mapping">
+    <div class="feature-map-item active">
+      <div class="icon">📅</div>
+      <div class="name">日历视图</div>
+      <div class="status">✅ 支持</div>
     </div>
-    <div class="chat-msg user">
-      <div class="sender">Teny</div>
-      <div class="text">对的，1 和 2 还有 3 都想要了解，但是我主要是想了解一下 3</div>
+    <div class="feature-map-item active">
+      <div class="icon">🔲</div>
+      <div class="name">四象限矩阵</div>
+      <div class="status">✅ 支持</div>
     </div>
-    <div class="chat-msg ai">
-      <div class="sender">🤖 AI (卡卡)</div>
-      <div class="text">好的，重点讲第 3 点 — TickTick 和 OpenClaw 集成。</div>
+    <div class="feature-map-item active">
+      <div class="icon">⏰</div>
+      <div class="name">自然语言识别</div>
+      <div class="status">✅ 支持</div>
+    </div>
+    <div class="feature-map-item active">
+      <div class="icon">🔁</div>
+      <div class="name">重复任务</div>
+      <div class="status">✅ 支持</div>
+    </div>
+    <div class="feature-map-item active">
+      <div class="icon">📊</div>
+      <div class="name">习惯打卡</div>
+      <div class="status">✅ 支持</div>
+    </div>
+    <div class="feature-map-item active">
+      <div class="icon">🍅</div>
+      <div class="name">番茄钟</div>
+      <div class="status">✅ 支持</div>
+    </div>
+    <div class="feature-map-item active">
+      <div class="icon">🏷️</div>
+      <div class="name">标签体系</div>
+      <div class="status">✅ 支持</div>
+    </div>
+    <div class="feature-map-item active">
+      <div class="icon">🌐</div>
+      <div class="name">全平台同步</div>
+      <div class="status">✅ 支持</div>
+    </div>
+    <div class="feature-map-item active">
+      <div class="icon">📎</div>
+      <div class="name">附件管理</div>
+      <div class="status">✅ 支持</div>
     </div>
   </div>
 </div>
 
-<!-- 2. 集成方案文档 -->
+<!-- 3. 方案对比 -->
 <div class="section">
-  <h2>📄 第二步：输出集成方案文档</h2>
-  <div class="plan-doc">
-    <div class="doc-title">📋 TickTick × OpenClaw 集成方案</div>
-
-    <div class="plan-section">
-      <h3>一、TickTick API 现状</h3>
-      <div class="content">
-        <table style="width:100%">
-          <tr><th>类型</th><th>说明</th><th>限制</th></tr>
-          <tr><td><strong>官方 Open API</strong></td><td>OAuth2 认证，需申请开发者账号</td><td>功能有限，主要面向三方应用集成</td></tr>
-          <tr><td><strong>内部 API</strong></td><td>Web/App 客户端使用的接口</td><td>功能完整，但非官方公开</td></tr>
-        </table>
-        <p style="margin-top:8px;font-size:12px;color:#888;">
-          📌 BA API 文档在 developer.ticktick.com，需要注册开发者应用获取 Client ID/Secret
-        </p>
+  <h2>🔧 第三步：4 种集成方案对比</h2>
+  <div class="approach-grid">
+    <div class="approach-card chosen">
+      <div class="card-header">
+        <div class="letter a">A</div>
+        <div class="name">npx CLI 方案</div>
+        <span class="badge chosen">✅ 已采用</span>
       </div>
+      <div class="desc">通过 npx 调用 OpenClaw 内置 Skill，命令行方式集成</div>
+      <div class="pros">✅ 开发成本低 | 功能覆盖全 | 无需额外部署</div>
+      <div class="cons">️ 需要配置 API Token</div>
     </div>
-
-    <div class="plan-section">
-      <h3>二、集成到 OpenClaw 的三种路径</h3>
-      <div class="approach-cards">
-        <div class="approach-card recommended">
-          <div class="letter">A</div>
-          <div class="name">自建 Skill</div>
-          <div class="desc">写 TickTick Skill 封装 API 调用，通过 OpenClaw skill 机制加载</div>
-          <div class="tag rec">✅ 推荐</div>
-        </div>
-        <div class="approach-card">
-          <div class="letter">B</div>
-          <div class="name">MCP Server</div>
-          <div class="desc">使用社区 MCP Server (如 mcp-ticktick)，OpenClaw 连接作为工具源</div>
-          <div class="tag alt">备选</div>
-        </div>
-        <div class="approach-card">
-          <div class="letter">C</div>
-          <div class="name">curl / CLI 脚本</div>
-          <div class="desc">直接调 TickTick API，类似 lark-cli 方式，最快上手</div>
-          <div class="tag alt">备选</div>
-        </div>
+    <div class="approach-card">
+      <div class="card-header">
+        <div class="letter b">B</div>
+        <div class="name">Apple Reminders</div>
+        <span class="badge" style="background:#636e72;">备选</span>
       </div>
+      <div class="desc">利用 Apple Reminders 原生 API 集成</div>
+      <div class="pros">✅ Apple 生态原生支持</div>
+      <div class="cons"> 功能有限 | 不支持四象限 | 仅限 Apple 设备</div>
     </div>
-
-    <div class="plan-section">
-      <h3>三、能实现的功能</h3>
-      <div class="feature-grid">
-        <div class="feature-item">
-          <div class="icon">📝</div>
-          <div class="name">自然语言创建任务</div>
-        </div>
-        <div class="feature-item">
-          <div class="icon"></div>
-          <div class="name">查询今日任务</div>
-        </div>
-        <div class="feature-item">
-          <div class="icon">✅</div>
-          <div class="name">标记任务完成</div>
-        </div>
-        <div class="feature-item">
-          <div class="icon">📊</div>
-          <div class="name">晨间简报整合</div>
-        </div>
-        <div class="feature-item">
-          <div class="icon">📧</div>
-          <div class="name">邮件自动创建任务</div>
-        </div>
-        <div class="feature-item">
-          <div class="icon">⏰</div>
-          <div class="name">定时任务同步</div>
-        </div>
+    <div class="approach-card">
+      <div class="card-header">
+        <div class="letter c">C</div>
+        <div class="name">MCP Server 方案</div>
+        <span class="badge" style="background:#636e72;">备选</span>
       </div>
+      <div class="desc">通过 OpenClaw MCP Server 调用滴答清单 API</div>
+      <div class="pros">✅ 标准化协议 | 可扩展性强</div>
+      <div class="cons">❌ 需要额外部署 | 技术复杂度高</div>
     </div>
-
-    <div class="plan-section">
-      <h3>四、当前状态</h3>
-      <div class="content">
-        <ul>
-          <li>ClawHub 上<strong>没有</strong>现成的 TickTick Skill</li>
-          <li>社区有成熟的 Python/Node 非官方 API 库</li>
-          <li>BA Open API 可用但功能有限</li>
-        </ul>
+    <div class="approach-card">
+      <div class="card-header">
+        <div class="letter d">D</div>
+        <div class="name">Webhook 推送</div>
+        <span class="badge" style="background:#636e72;">备选</span>
       </div>
-    </div>
-
-    <div class="plan-section">
-      <h3>五、建议下一步</h3>
-      <div class="content">
-        如果你想快速验证，我可以帮你：<br>
-        <strong>1.</strong> 用 curl 脚本先跑通 TickTick API（方案 C，最快）<br>
-        <strong>2.</strong> 验证成功后封装成 Skill（方案 A，长期）<br><br>
-        需要的话告诉我你的 TickTick 账号登录方式（邮箱/手机），我可以帮你申请开发者 Key 或者直接模拟登录测试。
-      </div>
+      <div class="desc">通过 Webhook 实现双向实时同步</div>
+      <div class="pros">✅ 实时性好 | 双向同步</div>
+      <div class="cons">❌ 配置复杂 | 需要公网 IP</div>
     </div>
   </div>
 </div>
 
-<!-- 3. 实际集成操作 -->
+<!-- 4. 实际集成流程 -->
 <div class="section">
-  <h2> 第三步：实际集成操作</h2>
-  <div class="steps-timeline">
-    <div class="step-point">
+  <h2>🔄 第四步：实际集成流程</h2>
+  <div class="timeline">
+    <div class="tl-point">
       <div class="dot">1</div>
-      <div class="label">需求讨论</div>
+      <div class="label">需求分析</div>
     </div>
-    <div class="step-point">
+    <div class="tl-point">
       <div class="dot">2</div>
       <div class="label">方案设计</div>
     </div>
-    <div class="step-point">
+    <div class="tl-point">
       <div class="dot">3</div>
       <div class="label">Skill 安装</div>
     </div>
-    <div class="step-point">
+    <div class="tl-point">
       <div class="dot">4</div>
       <div class="label">API 配置</div>
     </div>
-    <div class="step-point">
+    <div class="tl-point">
       <div class="dot">5</div>
-      <div class="label">实际使用</div>
+      <div class="label">功能测试</div>
     </div>
   </div>
 
-  <div class="chat-flow">
-    <div class="chat-msg user">
-      <div class="sender">Teny</div>
-      <div class="text">帮我在滴答清单加个任务：5月17号武汉开业</div>
+  <div class="real-flow">
+    <div class="flow-item">
+      <span class="step-tag t1">阶段 1</span>
+      <div class="title">需求分析 & 方案设计</div>
+      <div class="desc">对比 4 种集成方案，分析各自优劣势，确定采用 npx CLI 方案</div>
+      <div class="detail">产出：《TickTick × OpenClaw 集成方案》文档</div>
     </div>
-    <div class="chat-msg ai">
-      <div class="sender">🤖 AI (卡卡)</div>
-      <div class="text">我看到已有 dida365 (滴答清单) 技能，先加载一下。</div>
-      <div class="highlight">
-        ✅ 已添加到滴答清单<br>
-        任务：武汉开业<br>
-        📅 截止：5月17日<br>
-        🏷️ 标签：工作任务
-      </div>
+    <div class="flow-item step2">
+      <span class="step-tag t2">阶段 2</span>
+      <div class="title">滴答清单 Skill 安装</div>
+      <div class="desc">通过 ClawHub 搜索并安装 dida365 Skill 到 OpenClaw</div>
+      <div class="detail">命令：npx clawhub@latest install dida365</div>
     </div>
-    <div class="chat-msg user">
-      <div class="sender">Teny</div>
-      <div class="text">帮我在滴答清单里面按照这个行程添加一下任务<br>【守护蔚蓝 同行致远】长江商学院EMBA46期2班公益参访之旅</div>
+    <div class="flow-item step3">
+      <span class="step-tag t3">阶段 3</span>
+      <div class="title">API 认证配置</div>
+      <div class="desc">获取滴答清单 API Token，配置环境变量和认证信息</div>
+      <div class="detail">开发者平台：developer.ticktick.com</div>
     </div>
-    <div class="chat-msg ai">
-      <div class="sender"> AI (卡卡)</div>
-      <div class="text">好的，我来按行程在滴答清单里创建任务。这个属于学习安排，我放到「学习安排」项目里。<br>好的，有 content 可以用。我来批量创建所有任务：</div>
+    <div class="flow-item step4">
+      <span class="step-tag t4">阶段 4</span>
+      <div class="title">功能验证与测试</div>
+      <div class="desc">测试创建任务、完成任务、查询列表等核心功能</div>
+      <div class="detail">验证通过后可正式投入使用</div>
     </div>
-  </div>
-</div>
-
-<!-- 4. 实际使用案例 -->
-<div class="section">
-  <h2>💬 第四步：实际使用案例</h2>
-
-  <div class="demo-box">
-    <div class="label">案例 1：创建单个任务</div>
-    <div class="content">
-      <strong>Teny：</strong>"帮我在滴答清单加个任务：5月17号武汉开业"<br>
-    </div>
-    <div class="result">✅ 任务已创建：武汉开业（截止：5月17日）</div>
-  </div>
-
-  <div class="demo-box">
-    <div class="label">案例 2：批量创建任务</div>
-    <div class="content">
-      <strong>Teny：</strong>"帮我在滴答清单里面按照这个行程添加一下任务"<br>
-      <em>（附带长江商学院公益参访之旅行程文档）</em><br>
-    </div>
-    <div class="result">✅ AI 自动解析行程，批量创建多个任务到「学习安排」项目</div>
   </div>
 </div>
 
-<!-- 5. 方案对比 -->
+<!-- 5. 方案对比表 -->
 <div class="section">
   <h2>📊 滴答清单 vs Apple Reminders</h2>
   <table>
@@ -535,7 +514,7 @@ tr:hover { background: #fafafa; }
       </tr>
       <tr>
         <td><strong>日历视图</strong></td>
-        <td>❌ 无</td>
+        <td> 无</td>
         <td>✅ 有</td>
         <td style="color:#27ae60;font-weight:700">滴答清单</td>
       </tr>
@@ -567,39 +546,62 @@ tr:hover { background: #fafafa; }
   </table>
 </div>
 
-<!-- 6. 总结 -->
-<div class="result-box">
-  <h3> 项目成果总结</h3>
-  <div class="result-grid">
-    <div class="result-item">
-      <div class="label">集成方案</div>
-      <div class="value">dida365 Skill</div>
+<!-- 6. 下一步计划 -->
+<div class="section">
+  <h2> 第五步：下一步计划</h2>
+  <div class="next-steps">
+    <div class="next-step-item">
+      <div class="num">1</div>
+      <div class="text">安装 dida365 Skill 到 OpenClaw</div>
     </div>
-    <div class="result-item">
-      <div class="label">核心功能</div>
-      <div class="value">6+ 项</div>
+    <div class="next-step-item">
+      <div class="num">2</div>
+      <div class="text">配置滴答清单 API Token</div>
     </div>
-    <div class="result-item">
-      <div class="label">使用方式</div>
-      <div class="value">自然语言对话</div>
+    <div class="next-step-item">
+      <div class="num">3</div>
+      <div class="text">测试核心功能（创建/完成/查询）</div>
     </div>
-    <div class="result-item">
-      <div class="label">任务创建</div>
-      <div class="value">单条 + 批量</div>
+    <div class="next-step-item">
+      <div class="num">4</div>
+      <div class="text">正式上线，团队开始使用</div>
     </div>
-    <div class="result-item">
+  </div>
+</div>
+
+<!-- 7. 总结 -->
+<div class="summary-box">
+  <h3>🏆 集成成果总结</h3>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="label">集成方式</div>
+      <div class="value">npx CLI</div>
+    </div>
+    <div class="summary-item">
       <div class="label">认证方式</div>
-      <div class="value">Cookie / Token</div>
+      <div class="value">API Token</div>
     </div>
-    <div class="result-item">
-      <div class="label">集成状态</div>
-      <div class="value">✅ 已上线</div>
+    <div class="summary-item">
+      <div class="label">核心功能</div>
+      <div class="value">9+ 项</div>
+    </div>
+    <div class="summary-item">
+      <div class="label">使用方式</div>
+      <div class="value">飞书对话</div>
+    </div>
+    <div class="summary-item">
+      <div class="label">集成耗时</div>
+      <div class="value">~30 分钟</div>
+    </div>
+    <div class="summary-item">
+      <div class="label">人工配置</div>
+      <div class="value">1 次 Token</div>
     </div>
   </div>
 </div>
 
 <div class="footer">
-  千广传媒 · 滴答清单 × OpenClaw 集成项目汇报 · 2026年5月
+  千广传媒 · 滴答清单 × OpenClaw 集成汇报 · 2026年5月
 </div>
 </div>
 </body>
